@@ -1,19 +1,31 @@
 <?php
-//官网demo
-$server = new swoole_websocket_server("192.168.199.128", 9501);
+//创建websocket服务器对象，监听0.0.0.0:9502端口
+$ws = new swoole_websocket_server("127.0.0.1", 9502);
 
-$server->on('open', function (swoole_websocket_server $server, $request) {
-    echo "server: handshake success with fd{$request->fd}\n";//$request->fd 是客户端id
+//监听WebSocket连接打开事件
+$ws->on('open', function ($ws, $request) {
+    $fd[] = $request->fd;
+    $GLOBALS['fd'][] = $fd;
+    //$ws->push($request->fd, "hello, welcome\n");
 });
 
-$server->on('message', function (swoole_websocket_server $server, $frame) {
-    echo "receive from {$frame->fd}:{$frame->data},opcode:{$frame->opcode},fin:{$frame->finish}\n";
-    $server->push($frame->fd, "this is server");//$frame->fd 是客户端id，$frame->data是客户端发送的数据
-    //服务端向客户端发送数据是用 $server->push( '客户端id' ,  '内容')
+//监听WebSocket消息事件
+$ws->on('message', function ($ws, $frame) {
+    $msg =  'from'.$frame->fd.":{$frame->data}\n";
+//var_dump($GLOBALS['fd']);
+//exit;
+    foreach($GLOBALS['fd'] as $aa){
+        foreach($aa as $i){
+            $ws->push($i,$msg);
+        }
+    }
+   // $ws->push($frame->fd, "server: {$frame->data}");
+    // $ws->push($frame->fd, "server: {$frame->data}");
 });
 
-$server->on('close', function ($ser, $fd) {
-    echo "client {$fd} closed\n";
+//监听WebSocket连接关闭事件
+$ws->on('close', function ($ws, $fd) {
+    echo "client-{$fd} is closed\n";
 });
 
-$server->start();
+$ws->start();
