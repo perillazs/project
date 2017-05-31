@@ -1,6 +1,6 @@
 <?php
 //官网demo
-$server = new swoole_websocket_server("127.0.0.1", 9501);
+$server = new swoole_websocket_server("192.168.199.128", 9501);
 
 $server->on('open', function (swoole_websocket_server $server, $request) {
     echo "server: handshake success with fd{$request->fd}\n";//$request->fd 是客户端id
