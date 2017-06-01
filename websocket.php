@@ -6,7 +6,7 @@ $ws = new swoole_websocket_server("192.168.199.128", 9502);
 $ws->on('open', function ($ws, $request) {
     $fd[] = $request->fd;
     $GLOBALS['fd'][] = $fd;
-    $ws->push($request->fd, "hello, welcome\n");
+    // $ws->push($request->fd, "hello, welcome\n");
 });
 
 //监听WebSocket消息事件
