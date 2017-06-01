@@ -12,8 +12,8 @@ $ws->on('open', function ($ws, $request) {
 //监听WebSocket消息事件
 $ws->on('message', function ($ws, $frame) {
     $msg =  'from'.$frame->fd.":{$frame->data}\n";
-//var_dump($GLOBALS['fd']);
-//exit;
+var_dump($GLOBALS['fd']);
+exit;
     foreach($GLOBALS['fd'] as $aa){
         foreach($aa as $i){
             $ws->push($i,$msg);

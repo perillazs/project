@@ -8,6 +8,7 @@
 <div id="msg"></div>
 <input type="text" id="text">
 <input type="submit" value="发送数据" onclick="song()">
+<input type="button" value="关闭连接" onclick="close()">
 </body>
 <script>
     var msg = document.getElementById("msg");
@@ -33,6 +34,13 @@
         //向服务器发送数据
         websocket.send(text);
     }
+
+    function close(){
+      log("Goodbye!");
+      websocket.close();
+      websocket=null;
+    }
+
       //监听连接关闭
 //    websocket.onclose = function (evt) {
 //        console.log("Disconnected");
